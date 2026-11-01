@@ -425,6 +425,9 @@
 
   // ------------------------------------------------------------------ events
   document.addEventListener("click", (e) => {
+    // Hosts like htmlpreview inject a <base> tag, so in-app hash links are routed here instead of by the browser.
+    const link = e.target.closest('a[href^="#"]');
+    if (link) { e.preventDefault(); location.hash = link.getAttribute("href"); return; }
     const el = e.target.closest("[data-action]"); if (!el) return;
     const a = el.dataset.action;
     if (a === "sort") { const k = el.dataset.k; ui.dir = ui.sort === k ? -ui.dir : (k === "name" || k === "id" ? 1 : -1); ui.sort = k; }
